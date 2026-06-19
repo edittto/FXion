@@ -1,7 +1,7 @@
 {
-  "name": "MIRAGE 蜃気楼取引所",
-  "short_name": "MIRAGE",
-  "description": "架空通貨で本物の市場と勝負する取引ゲーム",
+  "name": "FXion",
+  "short_name": "FXion",
+  "description": "架空の世界で本物の為替と勝負する取引ゲーム",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#0E1116",

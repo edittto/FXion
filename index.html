@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#0E1116" />
 <link rel="manifest" href="manifest.json" />
 <link rel="apple-touch-icon" href="icon-192.png" />
-<title>MIRAGE — 蜃気楼取引所</title>
+<title>FXion — 架空の世界で、本物の為替と勝負する</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
@@ -29,24 +29,19 @@
   button{font-family:inherit; cursor:pointer; border:none}
   input,select{font-family:inherit}
 
-  /* ---------- shell ---------- */
   .wrap{max-width:560px; margin:0 auto; padding:0 16px}
-  header.topbar{
-    position:sticky; top:0; z-index:5; background:rgba(14,17,22,.86);
-    backdrop-filter:blur(10px); border-bottom:1px solid var(--line);
-  }
+  header.topbar{position:sticky; top:0; z-index:5; background:rgba(14,17,22,.86); backdrop-filter:blur(10px); border-bottom:1px solid var(--line);}
   .topbar-inner{max-width:560px;margin:0 auto;padding:12px 16px;display:flex;align-items:center;gap:10px}
-  .brand{font-weight:700;letter-spacing:.14em;font-size:15px}
+  .brand{font-weight:700;letter-spacing:.06em;font-size:17px}
   .brand b{color:var(--accent)}
-  .brand small{display:block;letter-spacing:.3em;font-size:9px;color:var(--faint);font-weight:500}
+  .brand small{display:block;letter-spacing:.26em;font-size:9px;color:var(--faint);font-weight:500}
   .spacer{flex:1}
   .iconbtn{background:transparent;color:var(--muted);font-size:12px;padding:6px 10px;border:1px solid var(--line);border-radius:8px}
   .iconbtn:hover{color:var(--text);border-color:var(--faint)}
 
-  /* ---------- auth / onboarding ---------- */
-  .center{min-height:calc(100dvh - 0px);display:flex;align-items:center;justify-content:center;padding:24px}
+  .center{min-height:100dvh;display:flex;align-items:center;justify-content:center;padding:24px}
   .card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:24px;width:100%;max-width:380px}
-  .hero{font-size:30px;font-weight:700;letter-spacing:.1em;margin:0 0 2px}
+  .hero{font-size:34px;font-weight:700;letter-spacing:.02em;margin:0 0 2px}
   .hero b{color:var(--accent)}
   .tag{color:var(--muted);font-size:13px;margin:0 0 22px}
   label.lab{display:block;font-size:11px;letter-spacing:.08em;color:var(--muted);margin:14px 0 6px;text-transform:uppercase}
@@ -61,14 +56,12 @@
   .msg.err{background:rgba(217,113,110,.12);color:var(--down);border:1px solid rgba(217,113,110,.3)}
   .msg.ok{background:rgba(124,131,255,.12);color:#aab0ff;border:1px solid rgba(124,131,255,.3)}
 
-  /* ---------- mode toggle ---------- */
   .modes{display:flex;gap:8px;margin:16px 0 14px}
   .mode{flex:1;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:11px 8px;text-align:center;color:var(--muted)}
   .mode .t{font-weight:700;letter-spacing:.06em;font-size:14px}
   .mode .s{font-size:10px;letter-spacing:.04em}
   .mode.active{border-color:var(--accent);color:var(--text);background:linear-gradient(180deg,var(--accent-dim),var(--panel))}
 
-  /* ---------- portfolio summary ---------- */
   .summary{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:18px;margin-bottom:14px}
   .summary .k{font-size:11px;letter-spacing:.1em;color:var(--muted);text-transform:uppercase}
   .networth{font-size:34px;font-weight:700;margin:2px 0 2px;letter-spacing:.01em}
@@ -79,25 +72,23 @@
   .badge{display:inline-block;font-size:10px;letter-spacing:.12em;padding:3px 8px;border-radius:6px;background:var(--panel2);color:var(--muted);border:1px solid var(--line)}
   .badge.bank{color:var(--down);border-color:rgba(217,113,110,.4)}
 
-  /* ---------- market list ---------- */
   .seclabel{font-size:11px;letter-spacing:.16em;color:var(--faint);text-transform:uppercase;margin:18px 2px 8px}
-  .asset{display:flex;align-items:center;gap:12px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:13px 14px;margin-bottom:8px;width:100%;text-align:left}
+  .asset{display:flex;align-items:center;gap:12px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:8px;width:100%;text-align:left}
   .asset:hover{border-color:var(--faint)}
-  .sym{width:46px}
-  .sym .c{font-weight:700;letter-spacing:.06em}
-  .sym .n{font-size:10px;color:var(--muted);letter-spacing:.04em}
-  .asset .px{flex:1;text-align:right}
+  .flag{font-size:24px;line-height:1;width:30px;text-align:center}
+  .who .c{font-weight:700;letter-spacing:.04em}
+  .who .c em{font-style:normal;color:var(--muted);font-weight:500;font-size:12px;margin-left:6px}
+  .who .n{font-size:10px;color:var(--faint);letter-spacing:.04em}
+  .asset .px{margin-left:auto;text-align:right}
   .asset .px .p{font-weight:700;font-size:16px;transition:color .25s}
-  .asset .px .h{font-size:10px;color:var(--faint)}
-  .asset .own{font-size:10px;color:var(--accent);text-align:right;min-width:60px}
+  .asset .px .h{font-size:10px;color:var(--accent)}
   .flash-up{color:var(--up)!important} .flash-down{color:var(--down)!important}
 
-  /* ---------- trade sheet ---------- */
   .sheet-bg{position:fixed;inset:0;background:rgba(6,8,11,.6);display:none;align-items:flex-end;justify-content:center;z-index:20}
   .sheet-bg.show{display:flex}
   .sheet{background:var(--panel);border:1px solid var(--line);border-top-left-radius:20px;border-top-right-radius:20px;width:100%;max-width:560px;padding:20px 18px calc(22px + env(safe-area-inset-bottom));animation:rise .22s ease}
   @keyframes rise{from{transform:translateY(20px);opacity:.4}to{transform:translateY(0);opacity:1}}
-  .sheet h3{margin:0 0 2px;font-size:20px;letter-spacing:.04em}
+  .sheet h3{margin:0 0 2px;font-size:20px;letter-spacing:.02em}
   .sheet .px2{color:var(--muted);font-size:13px;margin-bottom:14px}
   .seg{display:flex;background:var(--ink);border:1px solid var(--line);border-radius:10px;padding:4px;margin-bottom:12px}
   .seg button{flex:1;background:transparent;color:var(--muted);padding:9px;border-radius:7px;font-weight:700;letter-spacing:.06em;font-size:14px}
@@ -111,14 +102,13 @@
   .estimate{display:flex;justify-content:space-between;color:var(--muted);font-size:13px;margin:12px 2px 4px}
   .estimate b{color:var(--text)}
 
-  /* ---------- history ---------- */
   .trow{display:flex;align-items:center;gap:10px;padding:10px 2px;border-bottom:1px solid var(--line);font-size:13px}
   .trow .s{font-weight:700;width:54px}
   .trow .side{font-size:11px;letter-spacing:.08em;width:42px}
   .trow .side.buy{color:#aab0ff} .trow .side.sell{color:var(--down)}
   .trow .when{color:var(--faint);font-size:11px;margin-left:auto}
   .empty{color:var(--faint);font-size:13px;text-align:center;padding:24px}
-  footer{padding:26px 0 36px;text-align:center;color:var(--faint);font-size:11px;letter-spacing:.1em}
+  footer{padding:26px 0 36px;text-align:center;color:var(--faint);font-size:11px;letter-spacing:.08em;line-height:1.7}
 </style>
 </head>
 <body>
@@ -126,8 +116,8 @@
 <!-- ============ AUTH ============ -->
 <section id="view-auth" class="center">
   <div class="card">
-    <h1 class="hero">MIRA<b>GE</b></h1>
-    <p class="tag">架空通貨で、本物の市場と勝負する。</p>
+    <h1 class="hero">FX<b>ion</b></h1>
+    <p class="tag">架空の世界で、本物の為替と勝負する。</p>
     <label class="lab" for="email">メールアドレス</label>
     <input id="email" class="field" type="email" inputmode="email" placeholder="you@example.com" autocomplete="email" />
     <button id="send-link" class="btn">ログインリンクを送る</button>
@@ -164,7 +154,7 @@
 <div id="view-app" class="hidden">
   <header class="topbar">
     <div class="topbar-inner">
-      <div class="brand">MIRA<b>GE</b><small>蜃気楼取引所</small></div>
+      <div class="brand">FX<b>ion</b><small>架空の取引所</small></div>
       <div class="spacer"></div>
       <span id="user-tag" class="badge"></span>
       <button id="signout" class="iconbtn">ログアウト</button>
@@ -192,13 +182,13 @@
       <button id="reset-btn" class="iconbtn hidden" style="margin-top:14px">破産しました — リセットして再挑戦</button>
     </div>
 
-    <div class="seclabel">マーケット</div>
+    <div class="seclabel">マーケット（1単位あたりの円価格）</div>
     <div id="market"></div>
 
     <div class="seclabel">取引履歴</div>
     <div id="history"></div>
 
-    <footer>MIRAGE — 価格は実在の市場に連動 / 換金不可のゲーム内通貨</footer>
+    <footer>FXion — レートは実在の市場から算出 / 24時間更新 / 換金不可のゲーム内通貨</footer>
   </main>
 </div>
 
@@ -211,7 +201,7 @@
       <button id="seg-buy"  class="buy on">買う</button>
       <button id="seg-sell" class="sell">売る</button>
     </div>
-    <label class="lab" for="qty">数量</label>
+    <label class="lab" for="qty">数量（通貨の単位数）</label>
     <div class="qtyrow">
       <input id="qty" class="field mono" type="number" step="any" min="0" placeholder="0" />
     </div>
