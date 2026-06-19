@@ -6,6 +6,7 @@ const YEN = "¥";
 let me=null, profile=null, mode="unranked", account=null;
 let assets=[], prices={}, holdings={}, lastPrices={};
 let pollTimer=null, sheetSymbol=null, sheetSide="buy", chartPeriod="1H";
+let authMode="login"; // login | signup
 
 const $=(id)=>document.getElementById(id);
 const show=(id)=>$(id).classList.remove("hidden");
@@ -37,14 +38,16 @@ async function onAuth(session){
 function showOnly(id){["view-auth","view-onboard","view-app"].forEach(v=>v===id?show(v):hide(v));}
 
 function wireEvents(){
-  $("send-link").onclick=async()=>{
-    const email=$("email").value.trim();
-    if(!email)return flash("auth-msg","err","メールアドレスを入力してください");
-    $("send-link").disabled=true;
-    const {error}=await sb.auth.signInWithOtp({email,options:{emailRedirectTo:window.location.href.split("#")[0]}});
-    $("send-link").disabled=false;
-    if(error)return flash("auth-msg","err",error.message);
-    flash("auth-msg","ok","メールを送りました。届いたリンクを開いてください。");
+  $("auth-btn").onclick=doAuth;
+  $("toggle-auth").onclick=()=>{
+    authMode = authMode==="login" ? "signup" : "login";
+    $("auth-btn").textContent = authMode==="login" ? "ログイン" : "新規登録";
+    $("toggle-auth").textContent = authMode==="login"
+      ? "アカウントが無い方はこちら（新規登録）" : "既にアカウントがある方はこちら（ログイン）";
+    $("password").setAttribute("autocomplete", authMode==="login"?"current-password":"new-password");
+    $("auth-note").textContent = authMode==="login"
+      ? "登録したメールとパスワードでログインできます。" : "メールとパスワード（6文字以上）で登録します。";
+    clearMsg("auth-msg");
   };
   $("save-profile").onclick=saveProfile;
   $("country").onchange=()=>$("country").value==="JP"?show("pref-wrap"):hide("pref-wrap");
@@ -67,6 +70,28 @@ function wireEvents(){
     document.querySelectorAll("#chart-tabs .tab").forEach(x=>x.classList.toggle("on",x===t));
     loadChart();
   });
+}
+async function doAuth(){
+  const email=$("email").value.trim();
+  const password=$("password").value;
+  if(!email)return flash("auth-msg","err","メールアドレスを入力してください");
+  if(!password||password.length<6)return flash("auth-msg","err","パスワードは6文字以上で");
+  $("auth-btn").disabled=true;
+  let res;
+  if(authMode==="signup") res=await sb.auth.signUp({email,password});
+  else res=await sb.auth.signInWithPassword({email,password});
+  $("auth-btn").disabled=false;
+  if(res.error){
+    let m=res.error.message;
+    if(/already registered/i.test(m)) m="このメールは登録済みです。ログインに切り替えてください。";
+    if(/invalid login credentials/i.test(m)) m="メールかパスワードが違います。";
+    return flash("auth-msg","err",m);
+  }
+  // セッションが張られていれば onAuthStateChange が画面を進めます
+  if(!res.data.session){
+    const {data}=await sb.auth.signInWithPassword({email,password});
+    if(data.session) onAuth(data.session);
+  }
 }
 async function saveProfile(){
   const username=$("username").value.trim();

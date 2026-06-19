@@ -97,9 +97,12 @@
     <p class="tag">架空の世界で、本物の為替と勝負する。</p>
     <label class="lab" for="email">メールアドレス</label>
     <input id="email" class="field" type="email" inputmode="email" placeholder="you@example.com" autocomplete="email" />
-    <button id="send-link" class="btn">ログインリンクを送る</button>
+    <label class="lab" for="password">パスワード</label>
+    <input id="password" class="field" type="password" placeholder="6文字以上" autocomplete="current-password" />
+    <button id="auth-btn" class="btn">ログイン</button>
+    <button id="toggle-auth" class="iconbtn" style="width:100%;margin-top:10px;text-align:center">アカウントが無い方はこちら（新規登録）</button>
     <div id="auth-msg" class="msg"></div>
-    <p class="note">届くリンクを開くとログインできます。パスワード不要。</p>
+    <p class="note" id="auth-note">登録したメールとパスワードでログインできます。</p>
   </div>
 </section>
 
