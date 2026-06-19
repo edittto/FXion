@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#0E1116" />
+<link rel="manifest" href="manifest.json" />
+<link rel="apple-touch-icon" href="icon-192.png" />
+<title>MIRAGE — 蜃気楼取引所</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --ink:#0E1116; --panel:#161B22; --panel2:#1C232D; --line:#262E39;
+    --text:#E8EAED; --muted:#8A93A0; --faint:#5A626E;
+    --up:#E2A33C; --down:#D9716E; --accent:#7C83FF; --accent-dim:#2A2E4A;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%}
+  body{
+    background:var(--ink); color:var(--text);
+    font-family:"Space Grotesk", system-ui, -apple-system, "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
+    -webkit-font-smoothing:antialiased; line-height:1.45;
+    padding-bottom:env(safe-area-inset-bottom);
+  }
+  .mono{font-family:"JetBrains Mono", ui-monospace, monospace; font-variant-numeric:tabular-nums}
+  .hidden{display:none !important}
+  button{font-family:inherit; cursor:pointer; border:none}
+  input,select{font-family:inherit}
+
+  /* ---------- shell ---------- */
+  .wrap{max-width:560px; margin:0 auto; padding:0 16px}
+  header.topbar{
+    position:sticky; top:0; z-index:5; background:rgba(14,17,22,.86);
+    backdrop-filter:blur(10px); border-bottom:1px solid var(--line);
+  }
+  .topbar-inner{max-width:560px;margin:0 auto;padding:12px 16px;display:flex;align-items:center;gap:10px}
+  .brand{font-weight:700;letter-spacing:.14em;font-size:15px}
+  .brand b{color:var(--accent)}
+  .brand small{display:block;letter-spacing:.3em;font-size:9px;color:var(--faint);font-weight:500}
+  .spacer{flex:1}
+  .iconbtn{background:transparent;color:var(--muted);font-size:12px;padding:6px 10px;border:1px solid var(--line);border-radius:8px}
+  .iconbtn:hover{color:var(--text);border-color:var(--faint)}
+
+  /* ---------- auth / onboarding ---------- */
+  .center{min-height:calc(100dvh - 0px);display:flex;align-items:center;justify-content:center;padding:24px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:24px;width:100%;max-width:380px}
+  .hero{font-size:30px;font-weight:700;letter-spacing:.1em;margin:0 0 2px}
+  .hero b{color:var(--accent)}
+  .tag{color:var(--muted);font-size:13px;margin:0 0 22px}
+  label.lab{display:block;font-size:11px;letter-spacing:.08em;color:var(--muted);margin:14px 0 6px;text-transform:uppercase}
+  .field{width:100%;background:var(--ink);border:1px solid var(--line);border-radius:10px;color:var(--text);padding:12px 13px;font-size:15px}
+  .field:focus{outline:none;border-color:var(--accent)}
+  .btn{width:100%;background:var(--accent);color:#0a0c18;font-weight:700;padding:13px;border-radius:10px;font-size:15px;margin-top:18px;letter-spacing:.03em}
+  .btn:hover{filter:brightness(1.07)}
+  .btn:disabled{opacity:.5;cursor:default}
+  .note{color:var(--faint);font-size:12px;margin-top:14px;line-height:1.6}
+  .msg{margin-top:14px;font-size:13px;padding:10px 12px;border-radius:9px;display:none}
+  .msg.show{display:block}
+  .msg.err{background:rgba(217,113,110,.12);color:var(--down);border:1px solid rgba(217,113,110,.3)}
+  .msg.ok{background:rgba(124,131,255,.12);color:#aab0ff;border:1px solid rgba(124,131,255,.3)}
+
+  /* ---------- mode toggle ---------- */
+  .modes{display:flex;gap:8px;margin:16px 0 14px}
+  .mode{flex:1;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:11px 8px;text-align:center;color:var(--muted)}
+  .mode .t{font-weight:700;letter-spacing:.06em;font-size:14px}
+  .mode .s{font-size:10px;letter-spacing:.04em}
+  .mode.active{border-color:var(--accent);color:var(--text);background:linear-gradient(180deg,var(--accent-dim),var(--panel))}
+
+  /* ---------- portfolio summary ---------- */
+  .summary{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:18px;margin-bottom:14px}
+  .summary .k{font-size:11px;letter-spacing:.1em;color:var(--muted);text-transform:uppercase}
+  .networth{font-size:34px;font-weight:700;margin:2px 0 2px;letter-spacing:.01em}
+  .sub{display:flex;gap:18px;margin-top:8px;flex-wrap:wrap}
+  .sub div span{display:block;font-size:11px;color:var(--muted);letter-spacing:.05em}
+  .sub div b{font-size:16px;font-weight:600}
+  .ret.up{color:var(--up)} .ret.down{color:var(--down)}
+  .badge{display:inline-block;font-size:10px;letter-spacing:.12em;padding:3px 8px;border-radius:6px;background:var(--panel2);color:var(--muted);border:1px solid var(--line)}
+  .badge.bank{color:var(--down);border-color:rgba(217,113,110,.4)}
+
+  /* ---------- market list ---------- */
+  .seclabel{font-size:11px;letter-spacing:.16em;color:var(--faint);text-transform:uppercase;margin:18px 2px 8px}
+  .asset{display:flex;align-items:center;gap:12px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:13px 14px;margin-bottom:8px;width:100%;text-align:left}
+  .asset:hover{border-color:var(--faint)}
+  .sym{width:46px}
+  .sym .c{font-weight:700;letter-spacing:.06em}
+  .sym .n{font-size:10px;color:var(--muted);letter-spacing:.04em}
+  .asset .px{flex:1;text-align:right}
+  .asset .px .p{font-weight:700;font-size:16px;transition:color .25s}
+  .asset .px .h{font-size:10px;color:var(--faint)}
+  .asset .own{font-size:10px;color:var(--accent);text-align:right;min-width:60px}
+  .flash-up{color:var(--up)!important} .flash-down{color:var(--down)!important}
+
+  /* ---------- trade sheet ---------- */
+  .sheet-bg{position:fixed;inset:0;background:rgba(6,8,11,.6);display:none;align-items:flex-end;justify-content:center;z-index:20}
+  .sheet-bg.show{display:flex}
+  .sheet{background:var(--panel);border:1px solid var(--line);border-top-left-radius:20px;border-top-right-radius:20px;width:100%;max-width:560px;padding:20px 18px calc(22px + env(safe-area-inset-bottom));animation:rise .22s ease}
+  @keyframes rise{from{transform:translateY(20px);opacity:.4}to{transform:translateY(0);opacity:1}}
+  .sheet h3{margin:0 0 2px;font-size:20px;letter-spacing:.04em}
+  .sheet .px2{color:var(--muted);font-size:13px;margin-bottom:14px}
+  .seg{display:flex;background:var(--ink);border:1px solid var(--line);border-radius:10px;padding:4px;margin-bottom:12px}
+  .seg button{flex:1;background:transparent;color:var(--muted);padding:9px;border-radius:7px;font-weight:700;letter-spacing:.06em;font-size:14px}
+  .seg button.buy.on{background:rgba(124,131,255,.18);color:#aab0ff}
+  .seg button.sell.on{background:rgba(217,113,110,.18);color:var(--down)}
+  .qtyrow{display:flex;gap:8px;align-items:center;margin-bottom:6px}
+  .qtyrow .field{flex:1}
+  .chips{display:flex;gap:6px;margin:8px 0 4px;flex-wrap:wrap}
+  .chip{background:var(--panel2);color:var(--muted);font-size:12px;padding:6px 10px;border-radius:7px;border:1px solid var(--line)}
+  .chip:hover{color:var(--text)}
+  .estimate{display:flex;justify-content:space-between;color:var(--muted);font-size:13px;margin:12px 2px 4px}
+  .estimate b{color:var(--text)}
+
+  /* ---------- history ---------- */
+  .trow{display:flex;align-items:center;gap:10px;padding:10px 2px;border-bottom:1px solid var(--line);font-size:13px}
+  .trow .s{font-weight:700;width:54px}
+  .trow .side{font-size:11px;letter-spacing:.08em;width:42px}
+  .trow .side.buy{color:#aab0ff} .trow .side.sell{color:var(--down)}
+  .trow .when{color:var(--faint);font-size:11px;margin-left:auto}
+  .empty{color:var(--faint);font-size:13px;text-align:center;padding:24px}
+  footer{padding:26px 0 36px;text-align:center;color:var(--faint);font-size:11px;letter-spacing:.1em}
+</style>
+</head>
+<body>
+
+<!-- ============ AUTH ============ -->
+<section id="view-auth" class="center">
+  <div class="card">
+    <h1 class="hero">MIRA<b>GE</b></h1>
+    <p class="tag">架空通貨で、本物の市場と勝負する。</p>
+    <label class="lab" for="email">メールアドレス</label>
+    <input id="email" class="field" type="email" inputmode="email" placeholder="you@example.com" autocomplete="email" />
+    <button id="send-link" class="btn">ログインリンクを送る</button>
+    <div id="auth-msg" class="msg"></div>
+    <p class="note">入力したメールに届くリンクを開くとログインできます。<br>パスワードは不要です。</p>
+  </div>
+</section>
+
+<!-- ============ ONBOARDING ============ -->
+<section id="view-onboard" class="center hidden">
+  <div class="card">
+    <h1 class="hero" style="font-size:22px">プロフィール作成</h1>
+    <p class="tag">ランキングに表示される情報です。</p>
+    <label class="lab" for="username">ユーザー名</label>
+    <input id="username" class="field" maxlength="20" placeholder="トレーダー名" />
+    <label class="lab" for="country">国</label>
+    <select id="country" class="field">
+      <option value="JP">日本</option>
+      <option value="US">アメリカ</option>
+      <option value="KR">韓国</option>
+      <option value="CA">カナダ</option>
+      <option value="OTHER">その他</option>
+    </select>
+    <div id="pref-wrap">
+      <label class="lab" for="prefecture">都道府県</label>
+      <select id="prefecture" class="field"></select>
+    </div>
+    <button id="save-profile" class="btn">はじめる</button>
+    <div id="onboard-msg" class="msg"></div>
+  </div>
+</section>
+
+<!-- ============ APP ============ -->
+<div id="view-app" class="hidden">
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">MIRA<b>GE</b><small>蜃気楼取引所</small></div>
+      <div class="spacer"></div>
+      <span id="user-tag" class="badge"></span>
+      <button id="signout" class="iconbtn">ログアウト</button>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="modes">
+      <button class="mode active" data-mode="unranked">
+        <div class="t">アンランク</div><div class="s">自由に練習</div>
+      </button>
+      <button class="mode" data-mode="ranked">
+        <div class="t">ランク</div><div class="s">月間で競う</div>
+      </button>
+    </div>
+
+    <div class="summary">
+      <div class="k">純資産 (NET WORTH)</div>
+      <div id="networth" class="networth mono">—</div>
+      <div class="sub">
+        <div><span>現金</span><b id="cash" class="mono">—</b></div>
+        <div><span>損益</span><b id="ret" class="mono ret">—</b></div>
+        <div><span>状態</span><b id="status-badge"><span class="badge">—</span></b></div>
+      </div>
+      <button id="reset-btn" class="iconbtn hidden" style="margin-top:14px">破産しました — リセットして再挑戦</button>
+    </div>
+
+    <div class="seclabel">マーケット</div>
+    <div id="market"></div>
+
+    <div class="seclabel">取引履歴</div>
+    <div id="history"></div>
+
+    <footer>MIRAGE — 価格は実在の市場に連動 / 換金不可のゲーム内通貨</footer>
+  </main>
+</div>
+
+<!-- ============ TRADE SHEET ============ -->
+<div id="sheet-bg" class="sheet-bg">
+  <div class="sheet">
+    <h3 id="sheet-title">—</h3>
+    <div id="sheet-px" class="px2 mono">—</div>
+    <div class="seg">
+      <button id="seg-buy"  class="buy on">買う</button>
+      <button id="seg-sell" class="sell">売る</button>
+    </div>
+    <label class="lab" for="qty">数量</label>
+    <div class="qtyrow">
+      <input id="qty" class="field mono" type="number" step="any" min="0" placeholder="0" />
+    </div>
+    <div class="chips" id="chips"></div>
+    <div class="estimate"><span id="est-label">概算コスト</span><b id="est-val" class="mono">—</b></div>
+    <button id="confirm-trade" class="btn">確定</button>
+    <button id="close-sheet" class="iconbtn" style="width:100%;margin-top:8px;text-align:center">閉じる</button>
+    <div id="trade-msg" class="msg"></div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="config.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

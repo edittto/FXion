@@ -1,0 +1,14 @@
+{
+  "name": "MIRAGE 蜃気楼取引所",
+  "short_name": "MIRAGE",
+  "description": "架空通貨で本物の市場と勝負する取引ゲーム",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0E1116",
+  "theme_color": "#0E1116",
+  "orientation": "portrait",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}
